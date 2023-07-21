@@ -1,0 +1,81 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class SmartShelf {
+    private static JPanel cardPanel;
+    private static CardLayout cardLayout;
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> createAndShowGUI());
+    }
+
+    private static void createAndShowGUI() {
+        JFrame frame = new JFrame("Three Buttons Program");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 600);
+
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+
+        JPanel homePanel = createHomePanel();
+        JPanel page1Panel = createPagePanel("This is Page 1.", "Home");
+        JPanel page2Panel = createPagePanel("This is Page 2.", "Home");
+        JPanel page3Panel = createPagePanel("This is Page 3.", "Home");
+
+        cardPanel.add(homePanel, "Home");
+        cardPanel.add(page1Panel, "Page 1");
+        cardPanel.add(page2Panel, "Page 2");
+        cardPanel.add(page3Panel, "Page 3");
+
+        frame.add(cardPanel);
+
+        frame.setVisible(true);
+    }
+
+    private static JPanel createHomePanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        Dimension buttonSize = new Dimension(200, 200);
+        
+        JButton button1 = createButton("Go to Page 1", "Page 1");
+        panel.add(button1, BorderLayout.NORTH);
+        button1.setPreferredSize(buttonSize);
+
+        JButton button2 = createButton("Go to Page 2", "Page 2");
+        panel.add(button2, BorderLayout.CENTER);
+        button2.setSize(30, 30);
+
+        JButton button3 = createButton("Go to Page 3", "Page 3");
+        panel.add(button3, BorderLayout.SOUTH);
+        button3.setSize(30, 30);
+        return panel;
+    }
+
+    private static JPanel createPagePanel(String labelText, String backCardName) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel(labelText);
+        panel.add(label, BorderLayout.CENTER);
+
+        JButton backButton = createButton("Back", backCardName);
+        panel.add(backButton, BorderLayout.SOUTH);
+
+        return panel;
+    }
+
+    private static JButton createButton(String text, String cardName) {
+        JButton button = new JButton(text);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(cardPanel, cardName);
+            }
+        });
+
+        return button;
+    }
+}
